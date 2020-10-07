@@ -1,65 +1,91 @@
-import Head from 'next/head'
-import styles from '../styles/Home.module.css'
+import { useEffect, useRef } from "react";
+import Head from "next/head";
+import styles from "../styles/Home.module.css";
 
 export default function Home() {
+  const formRef = useRef();
+
+  useEffect(() => {
+    let kwesScript = document.querySelector("#kwes-script");
+
+    if (!kwesScript) {
+      kwesScript = document.createElement("script");
+      kwesScript.setAttribute("id", "kwes-script");
+      kwesScript.setAttribute("src", "https://kwes.io/v2/kwes-script.js");
+      document.head.appendChild(kwesScript);
+    }
+  }, []);
+
+  useEffect(() => {
+    formRef.current.addEventListener("kwCustomRulesSet", () => {
+      window.setCustomKwRule(
+        "mentoring",
+        "even",
+        "Even numbers only",
+        (value) => {
+          const parsed = parseInt(value, 10);
+          if (isNaN(parsed)) return true;
+          return parsed % 2 === 1;
+        }
+      );
+
+      window.setCustomKwRule(
+        "mentoring",
+        "date",
+        "Future dates only",
+        (value) => {
+          if (!value) return true;
+          console.log(new Date(value));
+          return new Date(value) < new Date();
+        }
+      );
+    });
+  }, []);
+
   return (
     <div className={styles.container}>
       <Head>
-        <title>Create Next App</title>
-        <link rel="icon" href="/favicon.ico" />
+        <title>Kwes</title>
       </Head>
 
-      <main className={styles.main}>
-        <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
-        </h1>
-
-        <p className={styles.description}>
-          Get started by editing{' '}
-          <code className={styles.code}>pages/index.js</code>
-        </p>
-
-        <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h3>Documentation &rarr;</h3>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
-
-          <a href="https://nextjs.org/learn" className={styles.card}>
-            <h3>Learn &rarr;</h3>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
-
-          <a
-            href="https://github.com/vercel/next.js/tree/master/examples"
-            className={styles.card}
-          >
-            <h3>Examples &rarr;</h3>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
-
-          <a
-            href="https://vercel.com/import?filter=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-          >
-            <h3>Deploy &rarr;</h3>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
+      <form
+        id="mentoring"
+        method="POST"
+        className="kwes-form"
+        action="https://kwes.io/api/foreign/forms/RmgBFwkvf8HQ6Fs17It0"
+        ref={formRef}
+      >
+        <div>
+          <label htmlFor="name">Your name</label>
+          <input type="text" name="name" data-kw-rules="required|max:255" />
         </div>
-      </main>
 
-      <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <img src="/vercel.svg" alt="Vercel Logo" className={styles.logo} />
-        </a>
-      </footer>
+        <div>
+          <label htmlFor="even">Even number</label>
+          <input type="text" name="even" data-kw-rules="required" />
+          <p>
+            <span data-kw-answer-piped>fields.even</span> is a great number
+          </p>
+          <div data-kw-show="fields.even === '42'">
+            Answer to the Ultimate Question of Life, the Universe, and
+            Everything
+          </div>
+        </div>
+
+        <div>
+          <label htmlFor="email">Your email</label>
+          <input type="email" name="email" data-kw-rules="required" />
+        </div>
+
+        <div className="kw-datepicker-wrapper">
+          <label htmlFor="date">When</label>
+          <input type="datepicker" name="date" data-kw-rules="required" />
+        </div>
+
+        <div>
+          <button type="submit">Submit</button>
+        </div>
+      </form>
     </div>
-  )
+  );
 }
