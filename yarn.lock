@@ -3027,6 +3027,11 @@ kind-of@^6.0.0, kind-of@^6.0.2:
   resolved "https://registry.yarnpkg.com/kind-of/-/kind-of-6.0.3.tgz#07c05034a6c349fa06e24fa35aa76db4580ce4dd"
   integrity sha512-dcS1ul+9tmeD95T+x28/ehLgd9mENa3LsvDTtzm3vyBEO7RPptvAD+t44WVXaUjTBRcrpFeFlC8WCruUR456hw==
 
+kwesforms@^2.0.3:
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/kwesforms/-/kwesforms-2.0.3.tgz#590fc824b241f03ade6e164a4314da91d12a7bf4"
+  integrity sha512-DG7iqgyFFD625lyGS7weEm5UPE/zn4+bhVxqVcPzHhrWh5Eq5X8acW2JvtE7JKCajU5iqZkpQroSIxpxq4gtxA==
+
 leven@^3.1.0:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/leven/-/leven-3.1.0.tgz#77891de834064cccba82ae7842bb6b14a13ed7f2"
